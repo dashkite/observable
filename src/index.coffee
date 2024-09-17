@@ -19,6 +19,9 @@ class Observable
     @plans.push { mutator, priority }
     @
 
+  abort: ->
+    @plans = []
+
   commit: ->
     do @push
     data = do @get
@@ -26,8 +29,7 @@ class Observable
       data = await mutator data
     @plans = []
     @set data
-    for handler in @handlers
-      handler do @get
+    ( handler do @get ) for handler in @handlers
     @
 
   update: ( mutator ) ->
