@@ -8,12 +8,14 @@ class Observable
 
   @keep: 10
 
-  @from: ( data ) ->
-    Object.assign ( new @ ), { data, plans: [], handlers: [], history: [] }
+  @from: ( data, { clone }) ->
+    clone ?= structuredClone
+    Object.assign ( new @ ), 
+      { data, clone, plans: [], handlers: [], history: [] }
 
-  get: -> structuredClone @data
+  get: -> @clone @data
 
-  set: ( data ) -> @data = structuredClone data
+  set: ( data ) -> @data = @clone data
 
   plan: ( mutator, priority = 0 ) ->
     @plans.push { mutator, priority }
@@ -50,7 +52,7 @@ class Observable
 
   pop: ->
     @data = @history.pop()
-    data = structuredClone @data
+    data = @clone @data
     handler data for handler in @handlers
     data
 
