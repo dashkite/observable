@@ -8,8 +8,10 @@ class Observable
 
   @keep: 10
 
-  @from: ( data, { clone }) ->
-    clone ?= structuredClone
+  @from: ( data, { clone } = {}) ->
+    # clone is invoked as a method so we wrap
+    # structuredClone when it's undefined
+    clone ?= ( value ) -> structuredClone value
     Object.assign ( new @ ), 
       { data, clone, plans: [], handlers: [], history: [] }
 
@@ -37,7 +39,10 @@ class Observable
   update: ( mutator ) ->
     @plan mutator
     do @commit
-      
+  
+  assign: ( update ) ->
+    @update ( data ) -> Object.assign data, update
+
   observe: ( handler ) ->
     @handlers.push handler
     handler
@@ -55,6 +60,5 @@ class Observable
     data = @clone @data
     handler data for handler in @handlers
     data
-
 
 export default Observable
