@@ -34,7 +34,7 @@ class Observable
     @plans = []
     @set data
     ( handler do @get ) for handler in @handlers
-    @
+    @    
 
   update: ( mutator ) ->
     @plan mutator
