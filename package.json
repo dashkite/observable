@@ -1,6 +1,6 @@
 {
   "name": "@dashkite/observable",
-  "version": "0.10.14",
+  "version": "0.10.15",
   "description": "Simple implementation of the observer pattern.",
   "keywords": [],
   "homepage": "https://github.com/dashkite/observable#readme",
